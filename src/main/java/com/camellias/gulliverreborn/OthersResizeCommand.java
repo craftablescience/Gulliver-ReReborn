@@ -59,7 +59,7 @@ public class OthersResizeCommand extends CommandBase
 	@Override
 	public int getRequiredPermissionLevel()
 	{
-		return 2;
+		return Config.COMMAND_OTHERSRESIZE_PERMISSION_LEVEL;
 	}
 	
 	@Override
@@ -119,25 +119,25 @@ public class OthersResizeCommand extends CommandBase
 		
 		if(size > 1)
 		{
-			((EntityPlayer) sender).getAttributeMap().applyAttributeModifiers(removeableAttributes);
+			player.getAttributeMap().applyAttributeModifiers(removeableAttributes);
 		}
 		else
 		{
-			((EntityPlayer) sender).getAttributeMap().removeAttributeModifiers(removeableAttributes);
+			player.getAttributeMap().removeAttributeModifiers(removeableAttributes);
 		}
 		
 		if(size < 1)
 		{
-			((EntityPlayer) sender).getAttributeMap().applyAttributeModifiers(removeableAttributes2);
+			player.getAttributeMap().applyAttributeModifiers(removeableAttributes2);
 		}
 		else
 		{
-			((EntityPlayer) sender).getAttributeMap().removeAttributeModifiers(removeableAttributes2);
+			player.getAttributeMap().removeAttributeModifiers(removeableAttributes2);
 		}
 		
 		player.getAttributeMap().applyAttributeModifiers(attributes);
 		player.setHealth(player.getMaxHealth());
 		
-		if(sender instanceof EntityPlayer) GulliverReborn.LOGGER.info(((EntityPlayer) sender).getDisplayNameString() + " set " + player.getDisplayNameString() +"'s size to " + size);
+		GulliverReborn.LOGGER.info(sender.getDisplayName().toString() + " set " + player.getDisplayNameString() +"'s size to " + size);
 	}
 }

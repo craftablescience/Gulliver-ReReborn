@@ -8,7 +8,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -16,6 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -58,14 +58,14 @@ public class MyResizeCommand extends CommandBase
 	@Override
 	public int getRequiredPermissionLevel()
 	{
-		return 0;
+		return Config.COMMAND_MYRESIZE_PERMISSION_LEVEL;
 	}
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
 	{
 		if(args.length < 1) return;
-		
+
 		String s = args[0];
 		float size;
 		
@@ -115,8 +115,12 @@ public class MyResizeCommand extends CommandBase
 			
 			((EntityPlayer) sender).getAttributeMap().applyAttributeModifiers(attributes);
 			((EntityPlayer) sender).setHealth(((EntityPlayer) sender).getMaxHealth());
-			
-			if(sender instanceof EntityPlayer) GulliverReborn.LOGGER.info(((EntityPlayer) sender).getDisplayNameString() + " set their size to " + size);
+
+			GulliverReborn.LOGGER.info(((EntityPlayer) sender).getDisplayNameString() + " set their size to " + size);
+		}
+		else if(sender instanceof TileEntity)
+		{
+			GulliverReborn.LOGGER.info("Cannot run /mysize command inside nonplayer! Ran at " + ((TileEntity) sender).getPos());
 		}
 	}
 }

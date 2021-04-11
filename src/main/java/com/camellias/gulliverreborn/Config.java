@@ -8,7 +8,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Config
 {
 	public static Configuration config;
-	
+
+	public static int COMMAND_MYRESIZE_PERMISSION_LEVEL;
+	public static int COMMAND_OTHERSRESIZE_PERMISSION_LEVEL;
+
 	public static float MAX_SIZE;
 	public static float HEALTH_MULTIPLIER;
 	
@@ -40,7 +43,7 @@ public class Config
 		
 		category = "Gulliver Reborn Config Options";
 		config.addCustomCategoryComment(category, "");
-		
+
 		MAX_SIZE = config.getFloat("Set the maximum player size", category, Float.MAX_VALUE, 1F, Float.MAX_VALUE, "Max player size");
 		HEALTH_MULTIPLIER = config.getFloat("Set the health multiplier", category, 1.0F, Float.MIN_VALUE, Float.MAX_VALUE, "Health Multiplier");
 		
@@ -63,7 +66,10 @@ public class Config
 		HEALTH_MODIFIER = config.getBoolean("Enable/disable the health modifier", category, true, "Health changes on resize");
 		HARVEST_MODIFIER = config.getBoolean("Enable/disable the harvest speed modifier", category, true, "Harvest speed is scaled with size");
 		JUMP_MODIFIER = config.getBoolean("Enable/disable the jump height modifier", category, true, "Jump height is scaled with size");
-		
+
+		COMMAND_MYRESIZE_PERMISSION_LEVEL = config.getInt("Permission level for the /mysize command", category, 0, 0, 3, "See the Minecraft wiki for permission level info");
+		COMMAND_OTHERSRESIZE_PERMISSION_LEVEL = config.getInt("Permission level for the /basesize command", category, 2, 0, 3, "See the Minecraft wiki for permission level info");
+
 		config.save();
 	}
 	

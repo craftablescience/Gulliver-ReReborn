@@ -1,7 +1,6 @@
 package com.camellias.gulliverreborn;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +51,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -63,7 +61,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -77,16 +74,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(
 modid = GulliverReborn.MODID,
 name = GulliverReborn.NAME,
-version = GulliverReborn.VERSION,
-acceptedMinecraftVersions = GulliverReborn.MCVERSION,
-dependencies = GulliverReborn.DEPENDENCIES)
+version = GulliverReborn.VERSION
+)
 public class GulliverReborn
 {
 	public static final String MODID = "gulliverreborn";
 	public static final String NAME = "Gulliver Reborn";
-	public static final String VERSION = "1.10";
-	public static final String MCVERSION = "1.12.2";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2795,];" + "required-after:artemislib@[1.0.6,];";
+	public static final String VERSION = "1.11";
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 	public static File config;
 	
@@ -126,8 +120,17 @@ public class GulliverReborn
 	{
 		EntityLivingBase entity = event.getEntityLiving();
 		World world = event.getEntityLiving().world;
+
+		AxisAlignedBB entityBoundingBox = entity.getEntityBoundingBox();
+		AxisAlignedBB footStompBox = new AxisAlignedBB(
+				entityBoundingBox.minX,
+				entityBoundingBox.minY,
+				entityBoundingBox.minZ,
+				entityBoundingBox.maxX,
+				((entityBoundingBox.maxY - entityBoundingBox.minY) / 4f) + entityBoundingBox.minY,
+				entityBoundingBox.maxZ);
 		
-		for(EntityLivingBase entities : world.getEntitiesWithinAABB(EntityLivingBase.class, entity.getEntityBoundingBox()))
+		for(EntityLivingBase entities : world.getEntitiesWithinAABB(EntityLivingBase.class, footStompBox))
 		{
 			if(!entity.isSneaking() && Config.GIANTS_CRUSH_ENTITIES)
 			{
@@ -174,21 +177,21 @@ public class GulliverReborn
 			float ratio = (player.height / 1.8F) / 2;
 			
 			if(block instanceof BlockRedFlower
-				|| state == Blocks.DOUBLE_PLANT.getDefaultState().withProperty(BlockDoublePlant.VARIANT, BlockDoublePlant.EnumPlantType.ROSE)
-				&& Config.ROSES_HURT)
+				|| (state == Blocks.DOUBLE_PLANT.getDefaultState().withProperty(BlockDoublePlant.VARIANT, BlockDoublePlant.EnumPlantType.ROSE)
+				&& Config.ROSES_HURT))
 			{
 				player.attackEntityFrom(DamageSource.CACTUS, 1);
 			}
 			
 			if(!player.capabilities.isFlying
 				&& Config.PLANTS_SLOW_SMALL_DOWN
-				&& (block instanceof BlockBush)
+				&& ((block instanceof BlockBush)
 				|| (block instanceof BlockCarpet)
 				|| (block instanceof BlockFlower)
 				|| (block instanceof BlockReed)
 				|| (block instanceof BlockSnow)
 				|| (block instanceof BlockWeb)
-				|| (block instanceof BlockSoulSand))
+				|| (block instanceof BlockSoulSand)))
 			{
 				player.motionX *= ratio;
 				if(block instanceof BlockWeb) player.motionY *= ratio;
@@ -206,7 +209,7 @@ public class GulliverReborn
 			
 			if(ClimbingHandler.canClimb(player, facing)
 				&& Config.CLIMB_SOME_BLOCKS
-				&& (block instanceof BlockDirt)
+				&& ((block instanceof BlockDirt)
 				|| (block instanceof BlockGrass)
 				|| (block instanceof BlockMycelium)
 				|| (block instanceof BlockLeaves)
@@ -216,7 +219,7 @@ public class GulliverReborn
 				|| (block instanceof BlockFarmland)
 				|| (block instanceof BlockGrassPath)
 				|| (block instanceof BlockGravel)
-				|| (block instanceof BlockClay))
+				|| (block instanceof BlockClay)))
 			{
 				if(player.collidedHorizontally)
 				{
@@ -366,7 +369,7 @@ public class GulliverReborn
 			EntityPlayer player = event.getEntity();
 			GameSettings settings = Minecraft.getMinecraft().gameSettings;
 			PotionEffect speed = player.getActivePotionEffect(MobEffects.SPEED);
-			float fov = settings.fovSetting / settings.fovSetting;
+			float fov = settings.fovSetting / settings.fovSetting; // wtf!?
 			
 			if(player.isSprinting())
 			{
@@ -408,8 +411,8 @@ public class GulliverReborn
 			if(entity.hasCapability(SizeCapPro.sizeCapability, null))
 			{
 				final ISizeCap cap = entity.getCapability(SizeCapPro.sizeCapability, null);
-				
-				if(cap.getTrans() == true)
+
+				if(cap != null && cap.getTrans())
 				{
 					float scale = entity.height / cap.getDefaultHeight();
 					
@@ -437,7 +440,7 @@ public class GulliverReborn
 			{
 				final ISizeCap cap = entity.getCapability(SizeCapPro.sizeCapability, null);
 				
-				if(cap.getTrans() == true)
+				if(cap != null && cap.getTrans())
 				{
 					float scale = entity.height / cap.getDefaultHeight();
 					
