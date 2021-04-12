@@ -80,7 +80,7 @@ public class GulliverReborn
 {
 	public static final String MODID = "gulliverreborn";
 	public static final String NAME = "Gulliver Reborn";
-	public static final String VERSION = "1.11";
+	public static final String VERSION = "1.11.1";
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 	public static File config;
 	
@@ -93,7 +93,7 @@ public class GulliverReborn
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Config.registerConfig(event);
-		MinecraftForge.EVENT_BUS.register(new GulliverReborn());
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	@EventHandler
@@ -187,7 +187,6 @@ public class GulliverReborn
 				&& Config.PLANTS_SLOW_SMALL_DOWN
 				&& ((block instanceof BlockBush)
 				|| (block instanceof BlockCarpet)
-				|| (block instanceof BlockFlower)
 				|| (block instanceof BlockReed)
 				|| (block instanceof BlockSnow)
 				|| (block instanceof BlockWeb)

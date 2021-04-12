@@ -1,0 +1,1 @@
+All the files in this directory are from Astral Sorcery. They are needed to fix a bug where large players still have a normal block reach. All rights to these files belong to the Astral Sorcery creators.

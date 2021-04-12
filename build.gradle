@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 // Only edit below this line.
 
-version = '1.11'
+version = '1.11.1'
 group = 'com.camellias.gulliverreborn'
 archivesBaseName = 'gulliverreborn'
 
@@ -30,6 +30,13 @@ repositories {
 
 dependencies {
     compile 'artemislib:ArtemisLib:1.12.2:v1.0.6'
+}
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': "com.camellias.gulliverreborn.asreachpatch.AstralCore"
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
 
 processResources {
