@@ -71,7 +71,7 @@ public class MyResizeCommand extends CommandBase
 		
 		try
 		{
-			size = Float.parseFloat(s);
+			size = MathHelper.clamp(Float.parseFloat(s), 0.01f, 30f);
 		}
 		catch(NumberFormatException e)
 		{
