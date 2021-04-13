@@ -21,6 +21,7 @@ public class Config
 	public static boolean HEALTH_MODIFIER;
 	public static boolean HARVEST_MODIFIER;
 	public static boolean JUMP_MODIFIER;
+	public static float JUMP_MODIFIER_STRENGTH;
 	
 	public static boolean DO_ADJUSTED_RENDER;
 	public static boolean PICKUP_SMALL_ENTITIES;
@@ -66,6 +67,7 @@ public class Config
 		HEALTH_MODIFIER = config.getBoolean("Enable/disable the health modifier", category, true, "Health changes on resize");
 		HARVEST_MODIFIER = config.getBoolean("Enable/disable the harvest speed modifier", category, true, "Harvest speed is scaled with size");
 		JUMP_MODIFIER = config.getBoolean("Enable/disable the jump height modifier", category, true, "Jump height is scaled with size");
+		JUMP_MODIFIER_STRENGTH = config.getFloat("Amount to change the jump height by proportional to size", category, 0.5f, 0.01f, 100f, "Only active when Jump Modifier enabled");
 
 		COMMAND_MYRESIZE_PERMISSION_LEVEL = config.getInt("Permission level for the /mysize command", category, 0, 0, 3, "See the Minecraft wiki for permission level info");
 		COMMAND_OTHERSRESIZE_PERMISSION_LEVEL = config.getInt("Permission level for the /basesize command", category, 2, 0, 3, "See the Minecraft wiki for permission level info");

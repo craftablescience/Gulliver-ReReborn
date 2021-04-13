@@ -80,7 +80,7 @@ public class GulliverReborn
 {
 	public static final String MODID = "gulliverreborn";
 	public static final String NAME = "Gulliver Reborn";
-	public static final String VERSION = "1.11.1";
+	public static final String VERSION = "1.11.2";
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 	public static File config;
 	
@@ -167,7 +167,10 @@ public class GulliverReborn
 		World world = event.player.world;
 		
 		player.stepHeight = player.height / 3F;
-		player.jumpMovementFactor *= (player.height / 1.8F);
+		if (player.height > 1.8f)
+			player.jumpMovementFactor *= (player.height / 1.8F) * Config.JUMP_MODIFIER_STRENGTH;
+		else
+			player.jumpMovementFactor *= (player.height / 1.8f);
 		
 		if(player.height < 0.9F)
 		{
@@ -339,8 +342,12 @@ public class GulliverReborn
 		if(event.getEntityLiving() instanceof EntityPlayer && Config.JUMP_MODIFIER)
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-			float jumpHeight = (player.height / 1.8F);
-			
+			float jumpHeight;
+			if (player.height > 2f)
+				jumpHeight = (player.height / 1.8F) * Config.JUMP_MODIFIER_STRENGTH;
+			else
+				jumpHeight = (player.height / 1.8F);
+
 			jumpHeight = MathHelper.clamp(jumpHeight, 0.65F, jumpHeight);
 			player.motionY *= jumpHeight;
 			
