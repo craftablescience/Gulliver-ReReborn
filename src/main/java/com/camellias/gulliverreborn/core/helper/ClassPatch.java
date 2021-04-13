@@ -6,7 +6,7 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package com.camellias.gulliverreborn.asreachpatch;
+package com.camellias.gulliverreborn.core.helper;
 
 import com.camellias.gulliverreborn.GulliverReborn;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,13 +15,6 @@ import org.objectweb.asm.tree.*;
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: ClassPatch
- * Created by HellFirePvP
- * Date: 04.08.2016 / 00:39
- */
 public abstract class ClassPatch {
 
     public boolean writeAsClassFile = false;

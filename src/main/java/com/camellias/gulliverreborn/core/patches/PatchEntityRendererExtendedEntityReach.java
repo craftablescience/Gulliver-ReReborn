@@ -6,20 +6,13 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package com.camellias.gulliverreborn.asreachpatch.patches;
+package com.camellias.gulliverreborn.core.patches;
 
-import com.camellias.gulliverreborn.asreachpatch.ClassPatch;
+import com.camellias.gulliverreborn.core.helper.ClassPatch;
 import net.minecraftforge.fml.relauncher.Side;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: PatchEntityRendererExtendedEntityReach
- * Created by HellFirePvP
- * Date: 23.08.2018 / 08:13
- */
 public class PatchEntityRendererExtendedEntityReach extends ClassPatch {
 
     public PatchEntityRendererExtendedEntityReach() {
@@ -48,9 +41,8 @@ public class PatchEntityRendererExtendedEntityReach extends ClassPatch {
         int afterApply = peekFirstInstructionAfter(mn, mn.instructions.indexOf(checkExReach),
                 (a) -> a instanceof VarInsnNode &&
                         a.getOpcode() == Opcodes.ISTORE &&
-                        ((VarInsnNode) a).var == 6); //Flag
+                        ((VarInsnNode) a).var == 6);
         if (afterApply != -1) {
-            //Overwrite.
             mn.instructions.insert(mn.instructions.get(afterApply), new VarInsnNode(Opcodes.ISTORE, 6));
             mn.instructions.insert(mn.instructions.get(afterApply), new InsnNode(Opcodes.ICONST_0));
         }

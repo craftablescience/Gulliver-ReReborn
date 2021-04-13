@@ -6,7 +6,7 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package com.camellias.gulliverreborn.asreachpatch;
+package com.camellias.gulliverreborn.core;
 
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
@@ -17,23 +17,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: AstralCore
- * Created by HellFirePvP
- * Date: 07.05.2016 / 02:55
- */
 @IFMLLoadingPlugin.Name(value = "GulliverRebornCore")
-@IFMLLoadingPlugin.TransformerExclusions({"com.camellias.gulliverreborn.asreachpatch"})
+@IFMLLoadingPlugin.TransformerExclusions({"com.camellias.gulliverreborn.core"})
 @IFMLLoadingPlugin.SortingIndex(1005)
-public class AstralCore implements IFMLLoadingPlugin, IFMLCallHook {
+public class GulliverRebornCore implements IFMLLoadingPlugin, IFMLCallHook {
 
     public static final Logger log = LogManager.getLogger("GulliverRebornCore");
 
     public static Side side;
 
-    public AstralCore() {
+    public GulliverRebornCore() {
         log.info("[GulliverRebornCore] Initialized.");
         side = FMLLaunchHandler.side();
     }
@@ -64,7 +57,7 @@ public class AstralCore implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String getAccessTransformerClass() {
-        return "com.camellias.gulliverreborn.asreachpatch.AstralTransformer";
+        return "com.camellias.gulliverreborn.core.GulliverRebornTransformer";
     }
 
 }

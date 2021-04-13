@@ -6,36 +6,29 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package com.camellias.gulliverreborn.asreachpatch;
+package com.camellias.gulliverreborn.core;
 
+import com.camellias.gulliverreborn.core.helper.ASMTransformationException;
+import com.camellias.gulliverreborn.core.helper.SubClassTransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: AstralTransformer
- * Created by HellFirePvP
- * Date: 07.05.2016 / 02:56
- */
-public class AstralTransformer implements IClassTransformer {
+public class GulliverRebornTransformer implements IClassTransformer {
 
-    private static List<SubClassTransformer> subTransformers = new LinkedList<>();
+    private static final List<SubClassTransformer> subTransformers = new LinkedList<>();
 
-    public AstralTransformer() throws IOException {
+    public GulliverRebornTransformer() throws IOException {
         loadSubTransformers();
     }
 
     private void loadSubTransformers() throws IOException {
-        subTransformers.add(new AstralPatchTransformer());
+        subTransformers.add(new GulliverRebornPatchTransformer());
     }
 
     private boolean isTransformationRequired(String trName) {
@@ -57,8 +50,8 @@ public class AstralTransformer implements IClassTransformer {
             try {
                 subTransformer.transformClassNode(node, transformedName, name);
             } catch (ASMTransformationException asmException) {
-                AstralCore.log.warn("Access transformation failed for Transformer: " + subTransformer.getIdentifier());
-                AstralCore.log.warn("Transformer added information:");
+                GulliverRebornCore.log.warn("Access transformation failed for Transformer: " + subTransformer.getIdentifier());
+                GulliverRebornCore.log.warn("Transformer added information:");
                 subTransformer.addErrorInformation();
                 asmException.printStackTrace();
                 throw asmException; //Rethrow
@@ -67,23 +60,7 @@ public class AstralTransformer implements IClassTransformer {
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
-        bytes = writer.toByteArray();
-
-        if (false) {
-            try {
-                File f = new File("C:/ASTestClasses/" + transformedName + ".class");
-                f.getParentFile().mkdirs();
-                f.createNewFile();
-                FileOutputStream out = new FileOutputStream(f);
-                out.write(bytes);
-                out.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return bytes;
+        return writer.toByteArray();
     }
 
 }

@@ -6,15 +6,8 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package com.camellias.gulliverreborn.asreachpatch;
+package com.camellias.gulliverreborn.core.helper;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: ASMTransformationException
- * Created by HellFirePvP
- * Date: 11.08.2016 / 10:04
- */
 public class ASMTransformationException extends RuntimeException {
 
     public ASMTransformationException() {
