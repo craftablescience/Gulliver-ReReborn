@@ -25,39 +25,14 @@ import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
 
-public class OthersResizeCommand extends CommandBase {
-	private static final List<String> aliases = Lists.newArrayList(GulliverReborn.MODID, "basesize", "bs");
-	private static final UUID uuidHeight = UUID.fromString("5440b01a-974f-4495-bb9a-c7c87424bca4");
-	private static final UUID uuidWidth = UUID.fromString("3949d2ed-b6cc-4330-9c13-98777f48ea51");
-	private static final UUID uuidReach1 = UUID.fromString("854e0004-c218-406c-a9e2-590f1846d80b");
-	private static final UUID uuidReach2 = UUID.fromString("216080dc-22d3-4eff-a730-190ec0210d5c");
-	private static final UUID uuidHealth = UUID.fromString("3b901d47-2d30-495c-be45-f0091c0f6fb2");
-	private static final UUID uuidStrength = UUID.fromString("558f55be-b277-4091-ae9b-056c7bc96e84");
-	private static final UUID uuidSpeed = UUID.fromString("f2fb5cda-3fbe-4509-a0af-4fc994e6aeca");
-	
-	@Override
-	public @Nonnull String getName() {
-		return "basesize";
-	}
+public class OthersResizeCommand extends GulliverRebornCommandBase {
 
-	@Override
-	public @Nonnull String getUsage(@Nonnull ICommandSender sender) {
-		return "gulliverreborn.commands.basesize.usage";
-	}
-	
-	@Override
-	public @Nonnull List<String> getAliases() {
-		return aliases;
-	}
-	
-	@Override
-	public boolean checkPermission(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender) {
-		return true;
-	}
-	
-	@Override
-	public int getRequiredPermissionLevel() {
-		return GulliverRebornConfig.COMMAND_OTHERSRESIZE_PERMISSION_LEVEL;
+	static {
+		aliases = Lists.newArrayList(GulliverReborn.MODID, "basesize", "bs");
+		name = "basesize";
+		nameKey = "gulliverreborn.commands.basesize.usage";
+		argumentLength = 2;
+		permissionLevel = GulliverRebornConfig.COMMAND_OTHERSRESIZE_PERMISSION_LEVEL;
 	}
 	
 	@Override
@@ -75,21 +50,18 @@ public class OthersResizeCommand extends CommandBase {
 	}
 	
 	@Override
-	public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
-		if (args.length < 2) return;
-		
+	public void run(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
 		String s = args[1];
 		float size;
 		
 		try {
-			size = MathHelper.clamp(Float.parseFloat(s), 0.01f, 30f);
+			size = MathHelper.clamp(Float.parseFloat(s), 0.125f, GulliverRebornConfig.MAX_SIZE);
 		} catch(NumberFormatException e) {
 			sender.sendMessage(new TextComponentString(TextFormatting.RED + "Size Invalid"));
 			return;
 		}
 		
 		EntityPlayer player = getPlayer(server, sender, args[0]);
-		size = MathHelper.clamp(size, 0.125F, GulliverRebornConfig.MAX_SIZE);
 		Multimap<String, AttributeModifier> attributes = HashMultimap.create();
 		Multimap<String, AttributeModifier> removeableAttributes = HashMultimap.create();
 		Multimap<String, AttributeModifier> removeableAttributes2 = HashMultimap.create();
@@ -116,6 +88,6 @@ public class OthersResizeCommand extends CommandBase {
 		player.getAttributeMap().applyAttributeModifiers(attributes);
 		player.setHealth(player.getMaxHealth());
 		
-		GulliverReborn.LOGGER.info(sender.getDisplayName().toString() + " set " + player.getDisplayNameString() +"'s size to " + size);
+		GulliverReborn.LOGGER.info(sender.getDisplayName() + " set " + player.getDisplayNameString() +"'s size to " + size);
 	}
 }

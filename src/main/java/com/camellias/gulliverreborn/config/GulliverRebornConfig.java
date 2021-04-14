@@ -38,7 +38,7 @@ public class GulliverRebornConfig {
 		String category = "Gulliver Reborn Config Options";
 		config.addCustomCategoryComment(category, "");
 
-		MAX_SIZE = config.getFloat("Set the maximum player size", category, Float.MAX_VALUE, 1F, Float.MAX_VALUE, "Max player size");
+		MAX_SIZE = config.getFloat("Set the maximum player size", category, 50f, 1F, 100f, "Max player size");
 		HEALTH_MULTIPLIER = config.getFloat("Set the health multiplier", category, 1.0F, Float.MIN_VALUE, Float.MAX_VALUE, "Health Multiplier");
 		DO_ADJUSTED_RENDER = config.getBoolean("Player render is more normal at small sizes, but may cause problems with other mods", category, true, "Enable the re-scaled player render?");
 		PICKUP_SMALL_ENTITIES = config.getBoolean("Enable/disable the ability to pick up small entities", category, true, "Can players pick up smaller entities?");
